@@ -10,7 +10,9 @@ const allowedOrigins = [
     'http://localhost:3001/register',
     'http://localhost:3000/login',
     'https://62efcacb657d69223757ab8b--unique-kitsune-cc49bf.netlify.app/',
-    'https://62efcacb657d69223757ab8b--unique-kitsune-cc49bf.netlify.app'
+    'https://62efcacb657d69223757ab8b--unique-kitsune-cc49bf.netlify.app',
+    "https://unique-kitsune-cc49bf.netlify.app/",
+    "https://unique-kitsune-cc49bf.netlify.app"
 ];
 
 module.exports = allowedOrigins;
