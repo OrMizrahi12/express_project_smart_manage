@@ -9,7 +9,7 @@ const handleLogin = async (req, res) => {
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
 
     // #8 check if the user exsist in mongoDB
-    const foundUser = await User.findOne({ username: user }).exec();
+    const foundUser = await User.findOne({ username: user }).lean();
     if (!foundUser) return res.sendStatus(401);
 
     // #9 we compare between the password in mongoDB to req.pwd

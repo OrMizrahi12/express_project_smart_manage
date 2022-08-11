@@ -1,7 +1,7 @@
 const Worker = require('../model/Worker');
 
 const getAllWorker = async (req, res) => {
-    const worker = await Worker.find();
+    const worker = await Worker.find().lean();
     if (!worker) return res.status(204).json({ 'message': 'No Worker found.' });
     res.json(worker);
 }
@@ -21,7 +21,7 @@ const createNewWorker = async (req, res) => {
         return res.status(400).json({ 'you must fill:':  arr });
     } 
     const duplicate = await Worker.findOne({ email:email }).exec();
-    if (duplicate) return res.sendStatus(409); //Conflict 
+    if (duplicate) return res.sendStatus(409); 
     try {
         const result = await Worker.create({
             firstname: req.body.firstname,
@@ -39,7 +39,6 @@ const createNewWorker = async (req, res) => {
 }
 
 const updateWorker = async (req, res) => {
-    const { firstname,lastname, email,role,seniority,userId } = req.body;
 
     if (!req?.params?._id) {
         return res.status(400).json({ 'message': 'ID parameter is required.' });
@@ -49,9 +48,6 @@ const updateWorker = async (req, res) => {
         return res.status(204).json({ "message": `No Worker matches ID ${req.body._id}.` });
     }
     
-    // if(!firstname || !lastname || !email || !role || !seniority || !userId){
-    //     return res.status(400).json({ 'message': ' parameters is required.' });
-    // }
    
     if (req.body?.firstname) worker.firstname = req.body.firstname;
     if (req.body?.lastname) worker.lastname = req.body.lastname;
@@ -77,7 +73,7 @@ const deleteWorker = async (req, res) => {
 const getWorker = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const worker = await Worker.findOne({ _id: req.params._id }).exec();
+    const worker = await Worker.findOne({ _id: req.params._id }).lean()
     if (!worker) {
         return res.status(204).json({ "message": `No Worker matches ID ${req.params._id}.` });
     }
@@ -87,7 +83,7 @@ const getWorker = async (req, res) => {
 const getWorkerByUserId = async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const worker = await Worker.find({ userId: req.params.userId })
+    const worker = await Worker.find({ userId: req.params.userId }).lean()
     if (!worker) {
         return res.status(204).json({ "message": `No Worker matches ID ${req.params.userId}.` });
     }

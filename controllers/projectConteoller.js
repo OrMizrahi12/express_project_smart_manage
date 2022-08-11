@@ -1,7 +1,7 @@
 const Project = require('../model/Project');
 
 const getAllProjects = async (req, res) => {
-    const project = await Project.find();
+    const project = await Project.find().lean()
     if (!project) return res.status(204).json({ 'message': 'No Worker found.' });
     res.json(project);
 }

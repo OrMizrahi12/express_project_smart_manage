@@ -1,9 +1,10 @@
 const Idea = require('../model/Idea');
 
 const getAllIdeas = async (req, res) => {
-    const idea = await Idea.find();
+    const idea = await Idea.find().lean()
+
     if (!idea) return res.status(204).json({ 'message': 'No todo found...' });
-    res.json(idea);
+    res.json(idea)
 }
 
 const createNewIdea = async (req, res) => {
@@ -43,7 +44,7 @@ const deleteIdea = async (req, res) => {
 const getIdea = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const idea = await Idea.findOne({ _id: req.params._id }).exec();
+    const idea = await Idea.findOne({ _id: req.params._id }).lean();
     if (!idea) {
         return res.status(204).json({ "message": `No idea matches ID ${req.params._id}.` });
     }
@@ -53,7 +54,7 @@ const getIdea = async (req, res) => {
 const getIdeaByIdUser = async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const idea = await Idea.find({ userId: req.params.userId });
+    const idea = await Idea.find({ userId: req.params.userId }).lean()
     if (!idea) {
         return res.status(204).json({ "message": `No idea matches ID ${req.params.userId}.` });
     }

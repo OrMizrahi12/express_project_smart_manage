@@ -1,7 +1,7 @@
 const Todo = require('../model/Todo');
 
 const getAllTodos = async (req, res) => {
-    const todo = await Todo.find();
+    const todo = await Todo.find().lean()
     if (!todo) return res.status(204).json({ 'message': 'No todo found...' });
     res.json(todo);
 }
@@ -63,7 +63,7 @@ const deleteTodo = async (req, res) => {
 const getTodo = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const todo = await Todo.findOne({ _id: req.params._id }).exec();
+    const todo = await Todo.findOne({ _id: req.params._id }).lean()
     if (!todo) {
         return res.status(204).json({ "message": `No todo matches ID ${req.params._id}.` });
     }
@@ -72,7 +72,7 @@ const getTodo = async (req, res) => {
 const getTodoById = async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const todo = await Todo.find({ userId: req.params.userId });
+    const todo = await Todo.find({ userId: req.params.userId }).lean()
     if (!todo) {
         return res.status(204).json({ "message": `No todo matches ID ${req.params.userId}.` });
     }

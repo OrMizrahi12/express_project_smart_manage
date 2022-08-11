@@ -1,7 +1,7 @@
 const Post = require('../model/Post');
 
 const getAllPosts = async (req, res) => {
-    const post = await Post.find();
+    const post = await Post.find().lean()
     if (!post) return res.status(204).json({ 'message': 'No posts found...' });
     res.json(post);
 }
@@ -58,7 +58,7 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'post ID required.' });
 
-    const post = await Post.findOne({ _id: req.params._id }).exec();
+    const post = await Post.findOne({ _id: req.params._id }).exec()
     if (!post) {
         return res.status(204).json({ "message": `No post matches ID ${req.params._id}.` });
     }
@@ -69,7 +69,7 @@ const deletePost = async (req, res) => {
 const getPost = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const post = await Post.findOne({ _id: req.params._id }).exec();
+    const post = await Post.findOne({ _id: req.params._id }).lean()
     if (!post) {
         return res.status(204).json({ "message": `No post matches ID ${req.params._id}.` });
     }
@@ -79,7 +79,7 @@ const getPost = async (req, res) => {
 const getPostByUserId = async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const post = await Post.find({ userId: req.params.userId }).exec();
+    const post = await Post.find({ userId: req.params.userId }).lean()
     if (!post) {
         return res.status(204).json({ "message": `No post matches ID ${req.params.userId}.` });
     }

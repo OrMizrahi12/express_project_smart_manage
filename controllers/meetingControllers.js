@@ -1,7 +1,7 @@
 const Meeting = require('../model/Meeting');
 
 const getAllMeetings = async (req, res) => {
-    const meeting = await Meeting.find();
+    const meeting = await Meeting.find().lean()
     if (!meeting) return res.status(204).json({ 'message': 'No meeting found...' });
     res.json(meeting);
 }
@@ -25,7 +25,7 @@ const createNewMeeting = async (req, res) => {
 const deleteMeeting = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'todo Meeting required.' });
 
-    const meeting = await Meeting.findOne({ _id: req.params._id }).exec();
+    const meeting = await Meeting.findOne({ _id: req.params._id }).exec()
     if (!meeting) {
         return res.status(204).json({ "message": `No meeting matches ID ${req.params._id}.` });
     }
@@ -36,7 +36,7 @@ const deleteMeeting = async (req, res) => {
 const getMeeting = async (req, res) => {
     if (!req?.params?._id) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const meeting = await Meeting.findOne({ _id: req.params._id }).exec();
+    const meeting = await Meeting.findOne({ _id: req.params._id }).lean()
     if (!meeting) {
         return res.status(204).json({ "message": `No meeting matches ID ${req.params._id}.` });
     }
@@ -46,7 +46,7 @@ const getMeeting = async (req, res) => {
 const getMeetingByuserId = async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ 'message': 'Worker ID required.' });
 
-    const meeting = await Meeting.find({ userId: req.params.userId });
+    const meeting = await Meeting.find({ userId: req.params.userId }).lean();
     if (!meeting) {
         return res.status(204).json({ "message": `No meeting matches ID ${req.params.userId}.` });
     }
